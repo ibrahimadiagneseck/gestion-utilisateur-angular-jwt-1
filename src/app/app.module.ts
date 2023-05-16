@@ -9,6 +9,8 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { UserService } from './service/user.service';
 import { AuthenticationService } from './service/authentication.service';
 import { AuthenticationGuard } from './guard/authentication.guard';
+import { NotificationModule } from './notification.module';
+import { NotificationService } from './service/notification.service';
 
 @NgModule({
   declarations: [
@@ -19,14 +21,19 @@ import { AuthenticationGuard } from './guard/authentication.guard';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    Notification
+    NotificationModule
   ],
   providers: [
-    //NotificationService,
+    NotificationService,
     AuthenticationGuard,
     AuthenticationService,
     UserService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    {
+      provide: HTTP_INTERCEPTORS,    // Fournit le type d'intercepteur HTTP à utiliser
+      useClass: AuthInterceptor,     // Utilise la classe AuthInterceptor comme implémentation de l'intercepteur
+      multi: true                    // Permet à l'intercepteur d'être utilisé en tant que multiple intercepteurs
+    }
+
   ],
   bootstrap: [AppComponent]
 })

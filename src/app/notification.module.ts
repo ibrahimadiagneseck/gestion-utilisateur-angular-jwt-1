@@ -1,18 +1,18 @@
 import { NgModule } from "@angular/core";
-import { NotifierModule } from "angular-notifier";
+import { NotifierModule, NotifierOptions } from "angular-notifier";
 
 const customNotifierOptions: NotifierOptions = {
   position: {
-        horizontal: {
-            position: 'left',
-            distance: 150
-        },
-        vertical: {
-            position: 'top',
-            distance: 12,
-            gap: 10
-        }
+    horizontal: {
+      position: 'left',
+      distance: 150
     },
+    vertical: {
+      position: 'top',
+      distance: 12,
+      gap: 10
+    }
+  },
   theme: 'material',
   behaviour: {
     autoHide: 5000,
@@ -43,7 +43,7 @@ const customNotifierOptions: NotifierOptions = {
 };
 
 @NgModule({
-imports: [NotifierModule.withConfig(customNotifierOptions)],
-exports: [NotifierModule]
+  imports: [NotifierModule.withConfig(customNotifierOptions)],
+  exports: [NotifierModule]
 })
-export class NotificationModule {}
+export class NotificationModule { }
