@@ -34,24 +34,29 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
-  // public onLogin(user: User): void {
-  //   this.showLoading = true;
-  //   this.subscriptions.push(
-  //     this.authenticationService.login(user).subscribe(
-  //       (response: HttpResponse<User>) => {
-  //         const token = response.headers.get(HeaderType.JWT_TOKEN);
-  //         this.authenticationService.saveToken(token);
-  //         this.authenticationService.addUserToLocalCache(response.body);
-  //         this.router.navigateByUrl('/user/management');
-  //         this.showLoading = false;
-  //       },
-  //       (errorResponse: HttpErrorResponse) => {
-  //         this.sendErrorNotification(NotificationType.ERROR, errorResponse.error.message);
-  //         this.showLoading = false;
-  //       }
-  //     )
-  //   );
-  // }
+  public onLogin(user: User): void {
+
+    this.showLoading = true;
+
+    this.subscriptions.push(
+
+      this.authenticationService.login(user).subscribe(
+
+        (response: HttpResponse<User>) => {
+          const token = response.headers.get(HeaderType.JWT_TOKEN);
+          this.authenticationService.saveToken(token!); // local storage
+          this.authenticationService.addUserToLocalCache(response.body!);
+          this.router.navigateByUrl('/user/management');
+          this.showLoading = false;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendErrorNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.showLoading = false;
+        }
+
+      )
+    );
+  }
 
   private sendErrorNotification(notificationType: NotificationType, message: string): void {
 
@@ -60,7 +65,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     } else {
       this.notificationService.notify(notificationType, 'An error occurred. Please try again.');
     }
-
   }
 
   ngOnDestroy(): void {
