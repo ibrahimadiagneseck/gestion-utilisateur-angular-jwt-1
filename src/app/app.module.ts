@@ -11,10 +11,16 @@ import { AuthenticationService } from './service/authentication.service';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { NotificationModule } from './notification.module';
 import { NotificationService } from './service/notification.service';
+import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
