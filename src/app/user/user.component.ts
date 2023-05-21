@@ -42,7 +42,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.authenticationService.getUserFromLocalCache();
-    this.getUsers(true);
+    this.getUsers(true); // true : afficher la notification
   }
 
 
@@ -71,7 +71,7 @@ export class UserComponent implements OnInit, OnDestroy {
   // }
 
   public getUsers(showNotification: boolean): void {
-    this.refreshing = true;
+    this.refreshing = true; // tourner l'icone actualiser
 
     const subscription = this.userService.getUsers().subscribe({
       next: (response: User[]) => {
@@ -92,6 +92,11 @@ export class UserComponent implements OnInit, OnDestroy {
     this.subscriptions.push(subscription);
   }
 
+  public onSelectUser(selectedUser: User): void {
+    this.selectedUser = selectedUser;
+    this.clickButton('openUserInfo');
+  }
+
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (message) {
       this.notificationService.notify(notificationType, message);
@@ -100,9 +105,9 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
-  // private clickButton(buttonId: string): void {
-  //   document.getElementById(buttonId).click();
-  // }
+  private clickButton(buttonId: string): void {
+    document.getElementById(buttonId)?.click();
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
