@@ -40,21 +40,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
 
-      this.authenticationService.login(user).subscribe(
+      this.authenticationService.login(user).subscribe({
 
-        (response: HttpResponse<User>) => {
+        next: (response: HttpResponse<User>) => {
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           this.authenticationService.saveToken(token!); // local storage
           this.authenticationService.addUserToLocalCache(response.body!);
           this.router.navigateByUrl('/user/management');
           this.showLoading = false;
         },
-        (errorResponse: HttpErrorResponse) => {
+        error: (errorResponse: HttpErrorResponse) => {
           this.sendErrorNotification(NotificationType.ERROR, errorResponse.error.message);
           this.showLoading = false;
         }
 
-      )
+      })
     );
   }
 
