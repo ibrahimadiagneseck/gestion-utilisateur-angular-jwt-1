@@ -47,16 +47,16 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  public getUsersFromLocalCache(): User[] | null {
+  public getUsersFromLocalCache(): User[] {
 
     if (localStorage.getItem('users')) {
       return JSON.parse(localStorage.getItem('users') || '{}');
     }
 
-    return null;
+    return [];
   }
 
-  public createUserFormDate(loggedInUsername: string, user: User, profileImage: File): FormData {
+  public createUserFormDate(loggedInUsername: string , user: User, profileImage: File): FormData {
 
     const formData = new FormData();
 
