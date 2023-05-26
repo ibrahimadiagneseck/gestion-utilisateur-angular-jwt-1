@@ -240,7 +240,7 @@
                                   <div class="col mb-3">
                                     <div class="form-group">
                                       <label>Role</label><small [hidden]="isAdmin">(read only)</small>
-                                      <select name="role" required [(ngModel)]="user!.role" class="form-control">
+                                      <select name="role" required [(ngModel)]="user!.role" class="form-select form-control">
                                         <option [hidden]="!isAdmin" value="ROLE_USER">USER</option>
                                         <option [hidden]="!isAdmin" value="ROLE_HR">HR</option>
                                         <option [hidden]="!isAdmin" value="ROLE_MANAGER">MANAGER</option>
@@ -524,7 +524,7 @@
         <div class="modal-content">
 
           <div class="modal-header">
-            <h5 class="modal-title text-center">Edit {{editUser.firstName}} {{editUser.lastName}}<small >(read only)</small></h5>
+            <h5 class="modal-title text-center">Edit {{editUser.firstName}} {{editUser.lastName}}<small [hidden]="isAdminOrManager">(read only)</small></h5>
 
             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
               <!-- <span aria-hidden="true">&times;</span> -->
@@ -538,31 +538,31 @@
                 <div class="form-group">
                   <label for="firstName">First Name</label>
 
-                  <input type="text" name="firstName" required [(ngModel)]="editUser.firstName" class="form-control">
+                  <input type="text" name="firstName" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.firstName" class="form-control">
                 </div>
 
                 <div class="form-group">
                   <label for="lastName">Last Name</label>
 
-                  <input type="text" name="lastName" required [(ngModel)]="editUser.lastName" class="form-control">
+                  <input type="text" name="lastName" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.lastName" class="form-control">
                 </div>
 
                 <div class="form-group">
                   <label for="username">Username</label>
 
-                  <input type="text" name="username"  required [(ngModel)]="editUser.username" class="form-control">
+                  <input type="text" name="username" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.username" class="form-control">
                 </div>
 
                 <div class="form-group">
                   <label for="email">Email</label>
 
-                  <input type="email" name="email" required [(ngModel)]="editUser.email" class="form-control">
+                  <input type="email" name="email" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.email" class="form-control">
                 </div>
 
                 <div class="form-group">
                   <label for="authority">Role <small [hidden]="isAdmin">(read only)</small></label>
 
-                  <select name="role" required [(ngModel)]="editUser.role" class="form-select form-control">
+                  <select name="role" [disabled]="!isAdmin" required [(ngModel)]="editUser.role" class="form-select form-control">
                     <option value="ROLE_USER">USER</option>
                     <option value="ROLE_HR">HR</option>
                     <option value="ROLE_MANAGER">MANAGER</option>
@@ -577,7 +577,7 @@
                   </div>
 
                   <div class="custom-file">
-                    <input style="display: none;" (change)="onProfileImageChange($event)" type="file" accept="image/*" name="profileImage" class="custom-file-input" id="inputGroupFile03">
+                    <input style="display: none;" [disabled]="!isAdminOrManager" (change)="onProfileImageChange($event)" type="file" accept="image/*" name="profileImage" class="custom-file-input" id="inputGroupFile03">
 
                     <label class="input-group-text" for="inputGroupFile03">
                       <span [hidden]="!fileName">{{ fileName }}</span>
@@ -590,17 +590,16 @@
                 <fieldset class="form-group">
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input name="active" type="checkbox"  [(ngModel)]="editUser.active" class="form-check-input">
-
-                      Acitve <small>(read only)</small>
+                      <input name="active" type="checkbox" [disabled]="!isManager" [(ngModel)]="editUser.active" class="form-check-input">
+                      Acitve <small [hidden]="isManager">(read only)</small>
                     </label>
                   </div>
 
                   <div class="form-check disabled">
                     <label class="form-check-label">
-                      <input name="locked" type="checkbox" [(ngModel)]="editUser.notLocked" class="form-check-input">
+                      <input name="locked" type="checkbox" [disabled]="!isManager" [(ngModel)]="editUser.notLocked" class="form-check-input">
 
-                      Unlocked <small >(read only)</small>
+                      Unlocked <small [hidden]="isManager">(read only)</small>
                     </label>
                   </div>
                 </fieldset>
@@ -611,7 +610,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Close</button>
-            <button type="button" (click)="onUpdateUser()" class="btn btn-primary">Save changes</button>
+            <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid || !isAdminOrManager" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>

@@ -349,8 +349,6 @@ export class UserComponent implements OnInit, OnDestroy {
 
   // -----------------------Role User-----------------------------------------------------------------------------
 
-  // note : un admin est un manager
-
   private getUserRole(): string {
     return this.authenticationService.getUserFromLocalCache().role;
   }
