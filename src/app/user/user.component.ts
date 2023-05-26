@@ -10,6 +10,7 @@ import { NotificationType } from '../enum/notification-type.enum';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { CustomHttpRespone } from '../model/custom-http-response';
+import { Role } from '../enum/role.enum';
 
 @Component({
   selector: 'app-user',
@@ -325,7 +326,9 @@ export class UserComponent implements OnInit, OnDestroy {
         if (event.status === 200) {
           this.user!.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getTime()}`;
           this.sendNotification(NotificationType.SUCCESS, `${event.body.firstName}\'s profile image updated successfully`);
-          this.fileStatus.status = 'done';
+          setTimeout(() => {
+            this.fileStatus.status = 'done';
+          }, 1000);
           break;
         } else {
           this.sendNotification(NotificationType.ERROR, `Unable to upload image. Please try again`);
@@ -337,6 +340,32 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  // ----------------------------------------------------------------------------------------------------
+
+
+
+
+
+  // -----------------------Role User-----------------------------------------------------------------------------
+
+  // note : un admin est un manager
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isManager(): boolean {
+    return this.isAdmin || this.getUserRole() === Role.MANAGER;
+  }
+
+  public get isAdminOrManager(): boolean {
+    return this.isAdmin || this.isManager;
+  }
 
   // ----------------------------------------------------------------------------------------------------
 
