@@ -121,7 +121,7 @@
 
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" name="reset-password-email" required ngModel class="form-control" placeholder="Enter email (example@email.com)">
+            <input type="email" name="reset-password-email" required ngModel class="form-control" placeholder="Enter email (example@email.com)" id="exampleInputEmail1">
             <small class="form-text text-muted">We'll never share your email with anyone else.</small>
           </div>
 
@@ -240,7 +240,7 @@
                                   <div class="col mb-3">
                                     <div class="form-group">
                                       <label>Role</label><small [hidden]="isAdmin">(read only)</small>
-                                      <select name="role" required [(ngModel)]="user!.role" class="form-select form-control">
+                                      <select name="role" [disabled]="!isAdmin" required [(ngModel)]="user!.role" class="form-select form-control">
                                         <option [hidden]="!isAdmin" value="ROLE_USER">USER</option>
                                         <option [hidden]="!isAdmin" value="ROLE_HR">HR</option>
                                         <option [hidden]="!isAdmin" value="ROLE_MANAGER">MANAGER</option>
@@ -259,14 +259,12 @@
                                   <div class="col">
                                     <div class="custom-controls-stacked px-2">
                                       <div class="custom-control custom-checkbox">
-                                        <input name="active" type="checkbox" [(ngModel)]="user!.active"
-                                          class="custom-control-input">
-                                        <label class="custom-control-label">Active</label>
+                                        <input name="active" type="checkbox" [(ngModel)]="user!.active" class="custom-control-input" id="active">
+                                        <label class="custom-control-label" for="active">Active</label>
                                       </div>
                                       <div class="custom-control custom-checkbox">
-                                        <input name="notLocked" type="checkbox" [(ngModel)]="user!.notLocked"
-                                          class="custom-control-input">
-                                        <label class="custom-control-label">Unlocked</label>
+                                        <input name="notLocked" type="checkbox" [(ngModel)]="user!.notLocked" class="custom-control-input" id="notLocked">
+                                        <label class="custom-control-label" for="notLocked">Unlocked</label>
                                       </div>
                                     </div>
                                   </div>
@@ -436,27 +434,27 @@
               <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
                 <div class="form-group">
                   <label for="firstName">First Name</label>
-                  <input type="text" name="firstName" required ngModel class="form-control">
+                  <input type="text" name="firstName" required ngModel class="form-control" id="firstName">
                 </div>
 
                 <div class="form-group">
                   <label for="lastName">Last Name</label>
-                  <input type="text" name="lastName" required ngModel class="form-control">
+                  <input type="text" name="lastName" required ngModel class="form-control" id="lastName">
                 </div>
 
                 <div class="form-group">
                   <label for="username">Username</label>
-                  <input type="text" name="username" required ngModel class="form-control">
+                  <input type="text" name="username" required ngModel class="form-control" id="username">
                 </div>
 
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="email" name="email" required ngModel class="form-control">
+                  <input type="email" name="email" required ngModel class="form-control" id="email">
                 </div>
 
-                <div class="form-group">
-                  <label for="authority">Role</label>
-                  <select name="role" required ngModel="ROLE_USER" class="form-select form-control">
+                <div *ngIf="isAdmin" class="form-group">
+                  <label for="authorities">Role</label>
+                  <select name="role" required ngModel="ROLE_USER" class="form-select form-control" id="authorities">
                     <option value="ROLE_USER">USER</option>
                     <option value="ROLE_HR">HR</option>
                     <option value="ROLE_MANAGER">MANAGER</option>
@@ -465,9 +463,9 @@
                   </select>
                 </div>
 
-                <div class="form-group">
+                <div *ngIf="!isAdmin" class="form-group">
                   <label for="authority">Role</label>
-                  <input type="text" name="role" required ngModel="USER" readonly class="form-control">
+                  <input type="text" name="role" required ngModel="USER" readonly class="form-control" id="authority">
                 </div>
 
                 <div class="input-group mb-2">
@@ -538,31 +536,31 @@
                 <div class="form-group">
                   <label for="firstName">First Name</label>
 
-                  <input type="text" name="firstName" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.firstName" class="form-control">
+                  <input type="text" name="firstName" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.firstName" class="form-control" id="firstName">
                 </div>
 
                 <div class="form-group">
                   <label for="lastName">Last Name</label>
 
-                  <input type="text" name="lastName" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.lastName" class="form-control">
+                  <input type="text" name="lastName" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.lastName" class="form-control" id="lastName">
                 </div>
 
                 <div class="form-group">
                   <label for="username">Username</label>
 
-                  <input type="text" name="username" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.username" class="form-control">
+                  <input type="text" name="username" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.username" class="form-control" id="username">
                 </div>
 
                 <div class="form-group">
                   <label for="email">Email</label>
 
-                  <input type="email" name="email" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.email" class="form-control">
+                  <input type="email" name="email" [disabled]="!isAdminOrManager" required [(ngModel)]="editUser.email" class="form-control" id="email">
                 </div>
 
                 <div class="form-group">
-                  <label for="authority">Role <small [hidden]="isAdmin">(read only)</small></label>
+                  <label for="authorities">Role <small [hidden]="isAdmin">(read only)</small></label>
 
-                  <select name="role" [disabled]="!isAdmin" required [(ngModel)]="editUser.role" class="form-select form-control">
+                  <select name="role" [disabled]="!isAdmin" required [(ngModel)]="editUser.role" class="form-select form-control" id="authorities">
                     <option value="ROLE_USER">USER</option>
                     <option value="ROLE_HR">HR</option>
                     <option value="ROLE_MANAGER">MANAGER</option>
@@ -579,7 +577,7 @@
                   <div class="custom-file">
                     <input style="display: none;" [disabled]="!isAdminOrManager" (change)="onProfileImageChange($event)" type="file" accept="image/*" name="profileImage" class="custom-file-input" id="inputGroupFile03">
 
-                    <label class="input-group-text" for="inputGroupFile03">
+                    <label for="inputGroupFile03" class="input-group-text">
                       <span [hidden]="!fileName">{{ fileName }}</span>
                       <span [hidden]="fileName">Choose File</span>
                     </label>
