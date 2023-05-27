@@ -28,7 +28,7 @@ export class UserService {
   }
 
   public resetPassword(email: string): Observable<CustomHttpRespone> {
-    return this.http.get<CustomHttpRespone>(`${this.host}/user/resetpassword/${email}`);
+    return this.http.get<CustomHttpRespone>(`${this.host}/user/resetPassword/${email}`);
   }
 
   // changer la photo de profil avec progression de telechargement
